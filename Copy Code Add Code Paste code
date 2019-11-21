@@ -1,0 +1,31 @@
+
+'Add new columns'
+
+
+Dim ws As Worksheet
+Set ws = ActiveSheet
+Dim tbl As ListObject
+Set tbl = ws.ListObjects("Sales_Table")
+'add a new column as the 5th column in the table
+tbl.ListColumns.Add(5).Name = "TAX"
+'add a new column at the end of the table
+tbl.ListColumns.Add.Name = "STATUS"
+
+
+'Paste Value'
+
+Sub ValuePaste()
+
+    'Value Paste Cells
+    Range("B1").value = Range("A1").value
+    Range("B1:B3").value = Range("A1:A3").value
+
+    'Set Values Between Worksheets
+    Worksheets("sheet2").range("A1").value = Worksheets("sheet1").range("A1").value
+
+    'Set Values Between Workbooks
+    Workbooks("book2.xlsm").Worksheets("sheet1").range("A1").value = _
+    Workbooks("book1.xlsm").Worksheets("sheet1").range("A1").value
+
+    Application.CutCopyMode = False
+End Sub

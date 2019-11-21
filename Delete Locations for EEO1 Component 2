@@ -1,0 +1,96 @@
+Sub delete_all_other_locationsv2()
+'module 14'
+'Keep all rows with "CD" in column J
+'that also have blanks in column D
+'and remove all other rows
+Dim sht As Worksheet
+Dim StartCell As Range
+Dim sheetNamesArray As Variant
+Dim tableNamesArray As Variant
+Dim x As Integer
+Dim AAPName As Variant
+Dim initialsheet As Worksheet
+
+tableNamesArray = Array("Table2", "Table1") 'not GEF
+sheetNamesArray = Array("Location Info", "Employee Data", "My Hires", "My Promos", "My Changes", "My Terms", "Promotions Flow", "PYER", "General Employee Information")
+
+On Error Resume Next
+    Set rRangeCheck = Range("AAP")
+    On Error GoTo 0
+    If rRangeCheck Is Nothing Then
+       MsgBox "Cancelled. You need to add a named range called 'AAP' that is a dropdown of each plan name, and select the plan you want. It can be in any tab."
+       Exit Sub
+    Else: End If ' named range exists'
+
+AAPName = Range("AAP").Value 'read the AAP Name to the macro'
+If SaveNewCopy("2017 EEO-1 Component 2 - " & AAPName & ".xlsx") = False Then Exit Sub 'prompt user to save as new name
+
+Set initialsheet = ActiveSheet
+
+Application.ScreenUpdating = False
+Application.Calculation = xlManual 'turn on calculations
+
+
+            On Error Resume Next
+
+            'Application.ScreenUpdating = False
+            For x = 0 To 6 'not pyer or GEF'
+
+            Set sht = Worksheets(sheetNamesArray(x))
+
+            'Set StartCell = sht.Range("A5")
+            sht.Activate
+            'Select Range
+                'ActiveSheet.ListObjects.Add(xlSrcRange, StartCell.CurrentRegion, , xlYes).Name = tableNamesArray(x)
+                ActiveSheet.ListObjects(1).AutoFilter.ShowAllData
+                ' ActiveSheet.ListObjects(1).Range.Copy
+                Dim myCell As Range
+                Dim Rng As Range
+                Dim Rng_Del As Range
+                Dim iCol As Long 'this is used to set  the index number of our column header "AAP Plan Name"'
+                Dim lo As ListObject
+                'Reset the Sheet
+                'Call Reset_Sheet
+
+                'Apply autofilter to data range
+                'Note: data must start in cell A1 for this macro to work
+                'Set Rng = Range("A1").CurrentRegion
+
+                If sht.AutoFilterMode = True Then
+                sht.AutoFilter.ShowAllData
+                End If
+                'Set reference to the first Table on the sheet
+                Set lo = sht.ListObjects(1)
+
+                'Set filter field
+                iCol = lo.ListColumns("EEO-1 Unit Number").Index
+
+                lo.Range.AutoFilter Field:=iCol, Criteria1:="<>" & AAPName
+'this is to delete the hidden rows
+                'Delete hidden rows
+
+                Application.DisplayAlerts = False
+
+                lo.Range.Offset(1, 0).Resize(lo.Range.Rows.Count - 1).SpecialCells(xlCellTypeVisible).Rows.Delete
+                ' For Each myCell In lo.Range.Columns(1).Cells
+                ' If myCell.EntireRow.Hidden Then
+                ' If Rng_Del Is Nothing Then
+                ' Set Rng_Del = myCell
+                ' Else
+                ' Set Rng_Del = Union(Rng_Del, myCell)
+                ' End If
+                ' End If
+                ' Next
+                '
+                ' If Not Rng_Del Is Nothing Then Rng_Del.EntireRow.Delete
+                Application.DisplayAlerts = True
+                'If sht.AutoFilterMode = True Then
+                lo.AutoFilter.ShowAllData
+                'End If
+                'sht.AutoFilterMode = False
+        Next x
+MsgBox ("Success! All other AAP plan names were deleted from your tables (except the GEF and PYER) leaving just " & AAPName)
+initialsheet.Activate
+Application.Calculation = xlAutomatic 'turn on calculations
+      Application.ScreenUpdating = True
+End Sub

@@ -1,0 +1,12 @@
+=IFNA(INDEX(AFL,MATCH(GEF[@[Employee ID]:[Employee ID]],AFL[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],AFL[#Headers],0)),INDEX(Table2,MATCH(GEF[@[Employee ID]:[Employee ID]],Table2[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],Table2[#Headers],0)))
+
+
+
+INDEX(Table2,MATCH(GEF[@[Employee ID]:[Employee ID]],Table2[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],Table2[#Headers],0))
+INDEX(AFL,MATCH(GEF[@[Employee ID]:[Employee ID]],AFL[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],AFL[#Headers],0))
+INDEX(Hires,MATCH(GEF[@[Employee ID]:[Employee ID]],Hires[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],Hires[#Headers],0))
+
+=IFNA(INDEX(Table2,MATCH(GEF[@[Employee ID]:[Employee ID]],Table2[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],Table2[#Headers],0)),
+  IFNA(INDEX(Hires,MATCH(GEF[@[Employee ID]:[Employee ID]],Hires[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],Hires[#Headers],0)),
+  INDEX(AFL,MATCH(GEF[@[Employee ID]:[Employee ID]],AFL[[Employee ID]:[Employee ID]],0),MATCH(GEF[[#Headers],[Last Name]],AFL[#Headers],0)))
+  )

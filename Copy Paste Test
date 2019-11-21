@@ -1,0 +1,12 @@
+Sub CopyPasteTest()
+
+Sheets("My ER").ListObjects("ER").ListColumns.Add.Name = "Department_Spell"
+
+Worksheets("My ER").ListObject("ER").ListColumns("Department").Copy
+
+Worksheets("My ER").ListObject("ER"),ListColumns("Department_Spell").Paste
+
+Worksheets("My ER").ListObject("ER"),ListColumns("Department_Spell") = vbProperCase
+
+
+End Sub

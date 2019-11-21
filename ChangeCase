@@ -1,0 +1,7 @@
+Sub ColorMispelledCells()
+
+For Each cl In ActiveSheet.UsedRange
+    cl.Value = LCase(cl.Value)
+
+Next cl
+End Sub

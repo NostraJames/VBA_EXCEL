@@ -1,0 +1,34 @@
+Public Sub CheckSheetSpelling()
+Dim MySheet As Object, MyCell As Range
+Dim i As Integer, j As Integer
+Dim MySentence As String, MyWord As String
+
+
+    Set MySheet = Sheets("Sheet1")
+
+    For Each MyCell In MySheet.UsedRange
+        If MyCell.Value <> MyCell.Formula Then GoTo NextCell:
+        If Application.CheckSpelling(MyCell.Value) Then GoTo NextCell:
+
+        MySentence = " " & MyCell.Value
+        i = 2
+        While i < Len(MySentence)
+            If Mid(MySentence, i - 1, 1) = " " And Mid(MySentence, i, 1) <> "" Then
+                j = InStr(i, MySentence, " ") - 1
+                If j = -1 Then j = Len(MySentence)
+                MyWord = Mid(MySentence, i, j - i + 1)
+                If Not Application.CheckSpelling(MyWord, IgnoreUppercase:=False) Then
+                    With MyCell.Characters(Start:=i - 1, Length:=j - i + 1).Font
+                        .Underline = xlUnderlineStyleNone
+                        .Color = RGB(255, 0, 0)
+                    End With
+                End If
+                i = j + 1
+            End If
+            i = i + 1
+        Wend
+
+NextCell:
+    Next MyCell
+
+End Sub

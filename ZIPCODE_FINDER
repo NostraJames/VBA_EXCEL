@@ -1,0 +1,10 @@
+function getZIP(address) {
+
+ var geo = Maps.newGeocoder().geocode(address);
+ var resultComponents = geo.results[0].address_components;
+ for (var i = 0; i < resultComponents.length; i++) {
+    if (resultComponents[i].types.indexOf('postal_code') > -1) {
+      return resultComponents[i].long_name;
+   }
+ }
+}

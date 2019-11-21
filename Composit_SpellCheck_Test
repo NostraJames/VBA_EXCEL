@@ -1,0 +1,98 @@
+Sub SpellCheck_v3()
+    Dim count As Integer
+    Dim lookR As range, c As range
+
+    With Sheets("My ER").ListObjects("ER")
+      Set lookR = .ListColumns("Department").DataBodyRange
+  count = 0
+       For Each cell In lookR
+            cell.Value = LCase(cell.Value)
+            If Not Application.CheckSpelling(Word:=cell.Text) Then
+            cell.Interior.ColorIndex = 28
+            count = count + 1
+        End If
+        cell.Value = UCase(cell.Value)
+
+  Next cell
+
+    End With
+
+
+    If count > 0 Then
+        MsgBox count & " cells containing misspelled words have been found and highlighted."
+    Else
+        MsgBox "No misspelled words have been found for Department."
+
+    End If
+
+    With Sheets("My ER").ListObjects("ER")
+      Set lookR = .ListColumns("Job Group & Description").DataBodyRange
+    count = 0
+       For Each cell In lookR
+       cell.Value = LCase(cell.Value)
+        If Not Application.CheckSpelling(Word:=cell.Text) Then
+            cell.Interior.ColorIndex = 28
+            count = count + 1
+        End If
+        cell.Value = UCase(cell.Value)
+
+    Next cell
+
+    End With
+
+
+    If count > 0 Then
+        MsgBox count & " cells containing misspelled words have been found and highlighted for Job Group & Description"
+    Else
+        MsgBox "No misspelled words have been found for Job Group & Description."
+
+    End If
+
+    With Sheets("My ER").ListObjects("ER")
+      Set lookR = .ListColumns("Recruitment Area").DataBodyRange
+    count = 0
+       For Each cell In lookR
+            If Not Application.CheckSpelling(Word:=cell.Text) Then
+            cell.Interior.ColorIndex = 28
+            count = count + 1
+        End If
+
+
+    Next cell
+
+    End With
+
+
+    If count > 0 Then
+        MsgBox count & " cells containing misspelled words have been found and highlighted for Recruitment Area"
+    Else
+        MsgBox "No misspelled words have been found for Recruitment Area."
+
+    End If
+
+    With Sheets("My ER").ListObjects("ER")
+      Set lookR = .ListColumns("Job Title").DataBodyRange
+    count = 0
+       For Each cell In lookR
+       cell.Value = LCase(cell.Value)
+        If Not Application.CheckSpelling(Word:=cell.Text) Then
+            cell.Interior.ColorIndex = 28
+            count = count + 1
+        End If
+        cell.Value = UCase(cell.Value)
+
+    Next cell
+
+    End With
+
+
+    If count > 0 Then
+        MsgBox count & " cells containing misspelled words have been found and highlighted for Job Title"
+    Else
+        MsgBox "No misspelled words have been found for Job Title."
+
+    End If
+
+
+
+End Sub

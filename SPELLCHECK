@@ -1,0 +1,7 @@
+Sub Highlight_Misspelled_Words()
+
+For Each cell In ActiveSheet.UsedRange
+  If Not Application.CheckSpelling(Word:=cell.Text) Then cell.Interior.ColorIndex = 28
+Next
+
+End Sub
